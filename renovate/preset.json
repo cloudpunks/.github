@@ -4,10 +4,15 @@
         "Preset used by Cloudpunks"
     ],
     "extends": [
-        "config:base",
+        "config:best-practices",
+        ":disableRateLimiting",
+        ":prImmediately",
         ":semanticCommits",
         ":semanticCommitType(deps)"
     ],
+    "dockerfile": {
+        "pinDigests": true
+    },
     "regexManagers": [
         {
             "fileMatch": [
@@ -21,6 +26,7 @@
     "packageRules": [
         {
             "description": "Strip v prefix from versions",
+            "groupName": "version prefix",
             "matchDatasources": [
                 "github-releases"
             ],
@@ -31,8 +37,8 @@
             "matchUpdateTypes": [
                 "major"
             ],
-            "semanticCommitType": "major",
-            "semanticCommitScope": "deps",
+            "semanticCommitType": "deps",
+            "semanticCommitScope": "major",
             "automerge": true
         },
         {
@@ -40,8 +46,8 @@
             "matchUpdateTypes": [
                 "minor"
             ],
-            "semanticCommitType": "minor",
-            "semanticCommitScope": "deps",
+            "semanticCommitType": "deps",
+            "semanticCommitScope": "minor",
             "automerge": true
         },
         {
@@ -49,8 +55,24 @@
             "matchUpdateTypes": [
                 "patch"
             ],
-            "semanticCommitType": "patch",
-            "semanticCommitScope": "deps",
+            "semanticCommitType": "deps",
+            "semanticCommitScope": "patch",
+            "automerge": true
+        },
+        {
+            "description": "Automerge docker digest updates",
+            "groupName": "docker digests",
+            "matchDatasources": [
+                "docker"
+            ],
+            "matchUpdateTypes": [
+                "pin",
+                "pinDigest",
+                "digest"
+            ],
+            "semanticCommitType": "deps",
+            "semanticCommitScope": "patch",
+            "pinDigests": true,
             "automerge": true
         },
         {
