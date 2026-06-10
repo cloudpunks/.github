@@ -86,6 +86,7 @@
             "automerge": true
         }
     ],
+    "automergeType": "pr",
     "labels": [
         "renovate"
     ]
