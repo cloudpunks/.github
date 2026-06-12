@@ -5,14 +5,12 @@
     ],
     "extends": [
         "config:best-practices",
+        ":automergeDigest",
         ":disableRateLimiting",
         ":prImmediately",
         ":semanticCommits",
         ":semanticCommitType(deps)"
     ],
-    "dockerfile": {
-        "pinDigests": true
-    },
     "regexManagers": [
         {
             "fileMatch": [
@@ -80,14 +78,15 @@
             "description": "Build tool version upgrades",
             "groupName": "build tools",
             "matchManagers": [
-                "github-actions"
+                "github-actions",
+                "gitlabci",
+                "gitlabci-include"
             ],
             "semanticCommitType": "ci",
             "semanticCommitScope": "tools",
             "automerge": true
         }
     ],
-    "automergeType": "pr",
     "labels": [
         "renovate"
     ]
