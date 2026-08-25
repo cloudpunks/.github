@@ -5,12 +5,20 @@
     ],
     "extends": [
         "config:best-practices",
-        ":automergeDigest",
         ":disableRateLimiting",
         ":prImmediately",
         ":semanticCommits",
         ":semanticCommitType(deps)"
     ],
+    "dockerfile": {
+        "pinDigests": true
+    },
+    "gomod": {
+        "postUpdateOptions": [
+            "gomodUpdateImportPaths",
+            "gomodTidy"
+        ]
+    },
     "regexManagers": [
         {
             "fileMatch": [
@@ -18,6 +26,15 @@
             ],
             "matchStrings": [
                 "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>.*?))?\\n.*?_version: (?<currentValue>.*)\\s"
+            ]
+        },
+        {
+            "fileMatch": [
+                "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
+                "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+            ],
+            "matchStrings": [
+                "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>.*?))?\nENV .*?_VERSION=(?<currentValue>.*)"
             ]
         }
     ],
@@ -30,14 +47,6 @@
             "semanticCommitType": "chore",
             "semanticCommitScope": "locks",
             "automerge": true
-        },
-        {
-            "description": "Strip v prefix from versions",
-            "groupName": "version prefix",
-            "matchDatasources": [
-                "github-releases"
-            ],
-            "extractVersion": "^v(?<version>.*)$"
         },
         {
             "description": "Semantic commits for major updates",
@@ -97,6 +106,7 @@
             "pinDigests": false
         }
     ],
+    "automergeType": "pr",
     "labels": [
         "renovate"
     ]
